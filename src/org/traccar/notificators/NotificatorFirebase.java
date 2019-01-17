@@ -76,7 +76,7 @@ public static class Data {
 
             Data data = new Data();
             data.body = NotificationFormatter.formatShortMessage(userId, event, position).trim();
-            data.sound = "myCustomSound.wav";
+            data.sound = "sos.wav";
             data.vibrate = "true";
 
             Message message = new Message();
