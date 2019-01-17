@@ -39,6 +39,17 @@ public class NotificatorFirebase extends Notificator {
     public static class Notification {
         @JsonProperty("body")
         private String body;
+        @JsonProperty("sound")
+        private String sound;
+    }
+
+public static class Data {
+        @JsonProperty("body")
+        private String body;
+        @JsonProperty("sound")
+        private String sound;
+        @JsonProperty("vibrate")
+        private String vibrate;
     }
 
     public static class Message {
@@ -46,6 +57,8 @@ public class NotificatorFirebase extends Notificator {
         private String[] tokens;
         @JsonProperty("notification")
         private Notification notification;
+        @JsonProperty("data")
+        private Data data;
     }
 
     public NotificatorFirebase() {
@@ -59,10 +72,17 @@ public class NotificatorFirebase extends Notificator {
 
             Notification notification = new Notification();
             notification.body = NotificationFormatter.formatShortMessage(userId, event, position).trim();
+            notification.sound = "sos.wav";
+
+            Data data = new Data();
+            data.body = NotificationFormatter.formatShortMessage(userId, event, position).trim();
+            data.sound = "myCustomSound.wav";
+            data.vibrate = "true";
 
             Message message = new Message();
             message.tokens = user.getString("notificationTokens").split("[, ]");
             message.notification = notification;
+            message.data = data;
 
             Context.getClient().target(URL).request()
                     .header("Authorization", "key=" + key)
